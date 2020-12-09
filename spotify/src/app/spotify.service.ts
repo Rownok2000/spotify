@@ -7,6 +7,9 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root'
 })
 export class SpotifyService {
+  getAlbumTracks(albumID: string): import("rxjs").Observable<Object> {
+      throw new Error("Method not implemented.");
+  }
    //url per oauth: https://developer.spotify.com/console/get-search-item/
   //Ottengo il modulo HttpClient
   constructor(private http: HttpClient) { }
@@ -21,6 +24,34 @@ export class SpotifyService {
   }
   getTrack(id: string) {
     const url = `https://api.spotify.com/v1/tracks/${id}`;
+    const headers = new HttpHeaders({Authorization: environment.oauthToken});
+    
+    return this.http.get(url, { headers });
+  }
+  searchArtist(query: string) {
+    const url = `https://api.spotify.com/v1/search?q=${query}&type=artist`;
+    const headers = new HttpHeaders({Authorization: environment.oauthToken});
+
+    let obsTracks = this.http.get(url, { headers });
+    return obsTracks;
+ //Ritorno un observable ai componenti che richiedono il servizio
+  }
+  getArtist(id: string) {
+    const url = `https://api.spotify.com/v1/artists/${id}`;
+    const headers = new HttpHeaders({Authorization: environment.oauthToken});
+    
+    return this.http.get(url, { headers });
+  }
+  searchAlbum(query: string) {
+    const url = `https://api.spotify.com/v1/search?q=${query}&type=album`;
+    const headers = new HttpHeaders({Authorization: environment.oauthToken});
+
+    let obsTracks = this.http.get(url, { headers });
+    return obsTracks;
+ //Ritorno un observable ai componenti che richiedono il servizio
+  }
+  getAlbum(id: string) {
+    const url = `https://api.spotify.com/v1/albums/${id}`;
     const headers = new HttpHeaders({Authorization: environment.oauthToken});
     
     return this.http.get(url, { headers });
